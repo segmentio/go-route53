@@ -26,7 +26,6 @@ func main() {
   check(err)
 
   dns := route53.New(auth, aws.USWest2)
-  check(err)
 
   res, err := dns.Zone("Z3T864J4ZMBODE").Add("A", "foo.test.io", "0.0.0.0")
   check(err)
