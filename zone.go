@@ -39,7 +39,19 @@ func (z *Zone) Remove(t, name, value string) (*r.ChangeResourceRecordSetsRespons
 }
 
 // Records returns the records present in the zone.
-func (z *Zone) Records() (*r.ListResourceRecordSetsResponse, error) {
-	// TODO: fetch all...
-	return z.c.ListResourceRecordSets(z.Id, nil)
+func (z *Zone) Records() ([]r.ResourceRecordSet, error) {
+	if res, err := z.c.ListResourceRecordSets(z.Id, nil); err == nil {
+		return res.Records, nil
+	} else {
+		return nil, err
+	}
+}
+
+// RecordsByName returns records via name.
+func (z *Zone) RecordsByName(name string) ([]r.ResourceRecordSet, error) {
+	if res, err := z.c.ListResourceRecordSets(z.Id, &r.ListOpts{Name: name}); err == nil {
+		return res.Records, nil
+	} else {
+		return nil, err
+	}
 }
