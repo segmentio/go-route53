@@ -49,9 +49,22 @@ func (z *Zone) Records() ([]r.ResourceRecordSet, error) {
 
 // RecordsByName returns records via name.
 func (z *Zone) RecordsByName(name string) ([]r.ResourceRecordSet, error) {
-	if res, err := z.c.ListResourceRecordSets(z.Id, &r.ListOpts{Name: name}); err == nil {
-		return res.Records, nil
-	} else {
-		return nil, err
+	records := []r.ResourceRecordSet{}
+
+	res, err := z.c.ListResourceRecordSets(z.Id, &r.ListOpts{Name: name})
+	if err != nil {
+		return records, nil
 	}
+
+	if nil == res.Records {
+		return records, nil
+	}
+
+	for _, record := range res.Records {
+		if record.Name == name+"." {
+			records = append(records, record)
+		}
+	}
+
+	return records, nil
 }
