@@ -33,6 +33,12 @@ func (z *Zone) Add(t, name, value string) (*r.ChangeResourceRecordSetsResponse, 
 	return z.change("CREATE", t, name, value)
 }
 
+// Add record type `t` with the given name and value,
+// for example .Add("A", "foo.example.com", "n.n.n.n")
+func (z *Zone) Upsert(t, name, value string) (*r.ChangeResourceRecordSetsResponse, error) {
+	return z.change("UPSERT", t, name, value)
+}
+
 // Remove record type `t` with the given name and value.
 func (z *Zone) Remove(t, name, value string) (*r.ChangeResourceRecordSetsResponse, error) {
 	return z.change("DELETE", t, name, value)
